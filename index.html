@@ -1,296 +1,33 @@
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Screen</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&amp;display=swap">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: 'Chivo', sans-serif;
-            font-weight: 300; 
-            position: relative;
+    <script>
+        function showTab(tabId) {
+            document.getElementById('tab1').classList.add('hidden');
+            document.getElementById('tab2').classList.add('hidden');
+            document.getElementById(tabId).classList.remove('hidden');
         }
-
-        .container {
-    position: relative;
-}
-
-		#loading {
-			position: absolute;
-			top: 50%;
-			margin: -200px 8.5%;
-			height: 400px;
-			width: 83%;
-			border-bottom: ridge rgba(0,0,0, 0.35);
-            opacity: 0; 
-            animation: fadeIn 2s forwards; 
-            animation-delay: 3s; 
-			/* border-radius: 8px; */
-			/* background-color: #3B2F3B; */
-		}
-
-		#car {
-			width: 64px;
-			height: 64px;
-			position: absolute;
-			left: 1%;
-			bottom: 0;
-            margin: -35px
-
-		}
-
-		#city {
-			width: 96px;
-			height: 96px;
-			position: absolute;
-			right: 1%;
-			bottom: 0;
-		}
-
-
-		#hint {
-			position: absolute; 
-			bottom: 0px; */
-			left: 0px;
-			margin: auto;
-			padding-top: 0px;
-			text-align: center;
-			color: #EEEEEE;
-			font-family: blogger-sans;
-			font-size: 0pt;
-			max-width: 800px;
-			opacity: 0;
-		}
-
-		#hint2 {
-			position: fixed;
-			bottom: 0px;
-			left: 0px;
-			color: #EEEEEE;
-			font-family: blogger-sans;
-			font-size: 0pt;
-			margin: 0;
-
-			animation-name: softblink;
-			animation-duration: 3s;
-			animation-iteration-count: infinite;
-		}
-
-		@keyframes softblink {
-			0% { opacity: 1 }
-			50% { opacity: 0.35 }
-			90% { opacity: 1 }
-		}
-
-		#hint.fade {
-			opacity: 0;
-		}
-
-.circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 200px;
-    height: 200px;
-    border: 10px solid #E3E3E3; 
-    border-radius: 50%;
-    background-color: #385cbc;
-    animation: circleAnimation 2s forwards;
-
-    animation-delay: 3s; 
-}
-
-.text-animation {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    color: #385cbc;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    font-size: 78px;
-    animation: slideOut 2s forwards;
-    animation-delay: 3s; 
-
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-
-@keyframes circleAnimation {
-    0% {
-        transform: translate(-50%, -50%);
-    }
-    100% {
-        transform: translate(45%, -50%);
-    }
-}
-
-@keyframes slideOut {
-    0% {
-        transform: translate(-50%, -50%);
-    opacity: 0;
-    }
-    100% {
-        transform: translate(-80%, -50%);
-    opacity: 1;
-    }
-}
-
-@keyframes infade {
-    0% {
-    opacity: 0;
-    }
-    100% {
-    opacity: 1;
-    }
-}
-
-.logo {
-    position: flex;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); 
-    transform-origin: center; 
-    width: 180px; 
-    height: 180px; 
-    object-fit: cover; 
- animation: 1s linear 0s normal none infinite running rot;
-  -webkit-animation: 3s linear 0s normal none infinite running rot;
-   margin: 0.66em;
-}
-
-@keyframes rot {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes rot {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-    </style>
+    </script>
 </head>
-<body bgcolor="#212121">
-	<p id="hint"></p>
-	<p id="hint2"></p>
-<div class="container">
-    <div class="circle">
-        <img src="logo.png" class="logo" alt="Logo">
+<body class="flex h-screen bg-purple-50">
+    <div class="flex w-full max-w-md">
+        <div class="flex flex-col space-y-2 w-1/3 h-full">
+            <button onclick="showTab('tab1')" class="border border-purple-300 p-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 bg-purple-200 hover:bg-purple-300">
+                <span class="text-purple-700 font-bold">1</span>
+            </button>
+            <button onclick="showTab('tab2')" class="border border-purple-300 p-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 bg-purple-200 hover:bg-purple-300">
+                <span class="text-purple-700 font-bold">2</span>
+            </button>
+        </div>
+        <div class="border border-purple-300 w-2/3 h-full ml-2 p-4 bg-white shadow-lg rounded-lg">
+            <div id="tab1" class="h-full">
+                <p class="text-lg font-bold mb-4 text-purple-700">penis</p>
+            </div>
+            <div id="tab2" class="h-full hidden">
+                <p class="text-lg font-bold mb-4 text-purple-700">penes2</p>
+            </div>
+        </div>
     </div>
-    <div class="text-animation">HOUSTON</div>
-</div>
-
-	<div id="loading">
-		<img src="load.png" id="car">
-	</div>
-
-    <audio autoplay="" loop="">
-    <source src="song.ogg" type="audio/ogg">
-</audio>
-
-	<script>
-		if (Math.random() > 0.98) document.getElementById('car').src = 'https://cdn.octothorp.team/icons/color64/car' + Math.floor(Math.random() * 3 + 1) + '.png'
-
-		function shuffle(a) {
-			var j, x, i
-			for (i = a.length - 1; i > 0; i--) {
-				j = Math.floor(Math.random() * (i + 1))
-				x = a[i]
-				a[i] = a[j]
-				a[j] = x
-			}
-			return a
-		}
-
-		var hints = shuffle([
-		])
-
-		var curHintID = -1
-		function nextHint() {
-			var el = document.getElementById('hint')
-			el.classList.add('fade')
-			setTimeout(function() {
-				curHintID ++
-				if (curHintID >= hints.length) curHintID = 0
-				el.innerHTML = hints[curHintID]
-				el.classList.remove('fade')
-			}, 500)
-		}
-		nextHint()
-		setInterval(nextHint, 10000)
-
-		function clamp(num){
-			return Math.min(Math.max(num, 0), 1)
-		}
-
-		var left = 1, stLeft = 5, filesTotal, wsTotal, filesLeft, wsLeft, finished;
-		function updateProgress() {
-			if (!filesLeft || !wsLeft) return
-			left = finished ? 0 : clamp(stLeft / 5) * 0.5 + clamp(filesLeft / filesTotal) * 0.1 + clamp(wsLeft / wsTotal) * 0.4
-		}
-
-		function SetStatusChanged(status){
-			if (status == 'Sending client info...'){
-				finished = true
-				// document.getElementById('hint').innerHTML = 'Почти на месте...'
-			} else if (status.search(/Extracting|Loading/i) == -1) stLeft = Math.max(stLeft - 1, 0)
-			else wsLeft --
-
-			updateProgress()
-		}
-
-		function SetFilesTotal(files){
-			if (!filesTotal){
-				filesTotal = files
-				filesLeft = files
-				updateProgress()
-			}
-		}
-
-		function SetFilesNeeded(ws){
-			if (!wsTotal){
-				wsTotal = ws
-				wsLeft = ws
-				updateProgress()
-			}
-		}
-
-		function DownloadingFile(name){
-			filesLeft --
-			updateProgress()
-		}
-
-		var val = 1
-		setInterval(function(){
-			if (val == left) return
-
-			val = Math.max(val - Math.max((val - left) * 0.01, 0.00002), 0)
-			document.getElementById('car').style.left = (93 * (1 - val)) + '%'
-		}, 16)
-	</script>
-
-
-
-</body></html>
+</body>
+</html>
