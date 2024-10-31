@@ -1,212 +1,71 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <title>FAQ</title>
+    <script src="https://unpkg.com/react/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
     <style>
-      #tabs {
-  margin: 10px 0;
-  overflow: hidden;
-}
-
-strong, a {
-  font-family: "M PLUS Rounded 1c", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  color: white;
-}
-.z {
-  font-family: "M PLUS Rounded 1c", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  color: white;
-}
-.tabs-nav {
-  width: 150px;
-  float: left;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  font-family: "M PLUS Rounded 1c", sans-serif;
-  font-weight: 600;
-  font-style: normal;
-  color: white;
-}
-.tabs-nav:after {
-  content: '';
-  display: inline-block;
-  width: 1px;
-  height: 1px;
-
-  position: absolute;
-  top: 0px;
-  right: 0px;
-}
-.tabs-nav li {
-  display: block;
-  padding: 0;
-  margin: 0;
-}    
-.tabs-nav a {
-  display: block;
-  padding: 10px 20px;
-  width: 100%;
-  box-sizing: border-box;
-  border-top: 1px solid #ccc;  
-  border-right: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  font-size: 16px;
-  text-decoration: none;
-  color: #999;
-}   
-.tabs-nav li:first-child a {
-  border-radius: 5px 0 0 0; 
-}
-.tabs-nav li:last-child a {
-  border-bottom: 1px solid #ccc;
-  border-radius: 0 0 0 5px; 
-}
-.tabs-nav a.active {
-  border-right: 1px solid #fff;
-  color: white;
-}    
-.tabs-items {
-  margin-left: 149px;
-}
-.tabs-item {
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 0 5px 5px 0; 
-  min-height: 160px;
-}
-#tab-3 {
-  height: 94vh; /* set the height of the tab content to the full viewport height */
-  overflow: hidden; /* prevent scrolling within the tab content */
-}
-
-#tab-3 iframe {
-  width: 100%; /* set the width of the iframe to 100% of its parent */
-  height: 100%; /* set the height of the iframe to 100% of its parent */
-  border: none; /* remove the border around the iframe */
-}
         body {
-            margin: 0;
-            background-color: #1a1a1a;
+            font-family: 'Arial', sans-serif;
         }
-
-
-
-        .main-content {
-            background: #1a1a1a;
-            border-radius: 10px 10px 10px 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            width: 500px;
-            background-size: cover;
-            background-position: center;
+        .faq-item {
+            transition: all 0.3s ease;
         }
-        .main-content label {
-            color: #888;
-            font-size: 15px;
-            margin: 5px;
+        .faq-item:hover {
+            background-color: #dfc2ff
         }
-        .main-content input {
-            width: 40%;
-            padding: 10px;
-            margin: 5px;
-            border-radius: 8px;
-            border: none;
-            background-color: #333;
-            color: #888;
-            margin-bottom: 1px;
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
         }
-        .main-content p {
-            color: #888;
-            font-size: 12px;
-            margin: 0;
+        .faq-answer.open {
+            max-height: 200px;
+            padding-top: 1rem;
         }
-        .main-content button {
-            background-color: #ff8c00;
-            color: white;
-            border: none;
-            width: 44%;
-            padding: 10px;
-            margin: 5px;
-            border-radius: 8px;
-            cursor: pointer;
-            align-self: flex-center;
-        }
+    </style>
+</head>
+<body class="bg-purple-100 text-gray-500">
+    <div id="root" class="container mx-auto p-3"></div>
+    <script type="text/babel">
+        const { useState } = React;
 
-}
-</style>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&display=swap" rel="stylesheet">
+        const FAQItem = ({ question, answer }) => {
+            const [isOpen, setIsOpen] = useState(false);
 
-  </head>
-  <body>
-<div id="tabs">
-  <!-- Кнопки -->
-  <ul class="tabs-nav">
-    <li><a href="#tab-1">About MultiGen</a></li>
-    <li><a href="#tab-2">Network</a></li>
-    <li><a href="#tab-3">VDS</a></li>
-  </ul> 
-  
-  <!-- Контент -->
-  <div class="tabs-items">
-    <div class="tabs-item" id="tab-1">
-      <h1 class="z">MultiGen</h1>
-      <strong>multitool for savvy dudes. creator:</strong>
-      <a href="t.me/standgen">STANDLIT</a>
-      
-    </div>
-    <div class="tabs-item" id="tab-2">
-          
-        <div class="main-content">
-            <input type="text" id="ping-input"        placeholder="Please enter a IP / URL to Ping">
-            <button>PING</button>
-    </div>
-    </div>
-    <div class="tabs-item" id="tab-3">
+            return (
+                <div className="faq-item p-3 mb-2 bg-purple-200 rounded shadow-md">
+                    <div className="flex justify-between items-center cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+                        <h3 className="text-lg font-semibold">{question}</h3>
+                        <i className={`fas fa-chevron-down transform transition-transform ${isOpen ? 'rotate-180' : ''}`}></i>
+                    </div>
+                    <div className={`faq-answer ${isOpen ? 'open' : ''}`}>
+                        <p>{answer}</p>
+                    </div>
+                </div>
+            );
+        };
 
-<iframe src="https://terminator.aeza.net" allowfullscreen id="penis" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>>
+        const FAQ = () => {
+            const faqData = [
+                { question: "what?", answer: "susumanannanan" },
+                { question: "what?", answer: "susumanannanan" },
+                { question: "what?", answer: "susumanannanan" },
+                { question: "what?", answer: "susumanannanan" },
+            ];
 
+            return (
+                <div>
+                    {faqData.map((item, index) => (
+                        <FAQItem key={index} question={item.question} answer={item.answer} />
+                    ))}
+                </div>
+            );
+        };
 
-    </div>    
-  </div>
-</div>  
- </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script>
-
-$(function() {
-  var tab = $('#tabs .tabs-items > div'); 
-  tab.hide().filter(':first').show(); 
-  
-  // Клики по вкладкам.
-  $('#tabs .tabs-nav a').click(function(){
-    tab.hide(); 
-    tab.filter(this.hash).show(); 
-    $('#tabs .tabs-nav a').removeClass('active');
-    $(this).addClass('active');
-    return false;
-  }).filter(':first').click();
- 
-  // Клики по якорным ссылкам.
-  $('.tabs-target').click(function(){
-    $('#tabs .tabs-nav a[href=' + $(this).attr('href')+ ']').click();
-  });
-  
-  // Отрытие вкладки из хеша URL
-  if(window.location.hash){
-    $('#tabs-nav a[href=' + window.location.hash + ']').click();
-    window.scrollTo(0, $("#" . window.location.hash).offset().top);
-  }
-});
-
-
-
-</script>
+        ReactDOM.render(<FAQ />, document.getElementById('root'));
+    </script>
+</body>
 </html>
