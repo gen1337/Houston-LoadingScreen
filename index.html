@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App Hash Checker</title>
+    <title>StartApp Parameter Checker</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,55 +38,43 @@
     </style>
 </head>
 <body>
-    <h1>Telegram Web App Params</h1>
+    <h1>URL Parameter Checker</h1>
 
-    <div id="data-display">Loading Telegram WebApp data...</div>
-    <div id="output">Checking parameters...</div>
+    <div id="data-display">Checking URL parameters...</div>
+    <div id="output">Looking for startapp parameter...</div>
 
-<script>
-    function processTelegramData() {
-        const output = document.getElementById('output');
-        const dataDisplay = document.getElementById('data-display');
+    <script>
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            const results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
 
-        const checkInterval = setInterval(() => {
-            if (window.Telegram && window.Telegram.WebApp) {
-                clearInterval(checkInterval);
-                const webApp = Telegram.WebApp;
+        function processParameters() {
+            const output = document.getElementById('output');
+            const dataDisplay = document.getElementById('data-display');
 
-                dataDisplay.textContent = JSON.stringify({
-                    initData: webApp.initData,
-                    initDataUnsafe: webApp.initDataUnsafe,
-                    version: webApp.version,
-                    platform: webApp.platform,
-                    themeParams: webApp.themeParams
-                }, null, 2);
+            const startParam = getParameterByName('startapp') || 
+                               getParameterByName('start') || 
+                               window.location.hash.substring(1);
 
-                const startParam = webApp.initDataUnsafe.start_param;
+            dataDisplay.textContent = `URL: ${window.location.href}\n\nExtracted parameter: ${startParam}`;
 
-                if (startParam === 'action-hit') {
-                    output.innerHTML = '<span class="success">Ой ой ой! (action=hit)</span>';
-                } else if (startParam === 'action-beat') { 
-                    output.innerHTML = '<span class="success">Туц туц туц! (action=beat)</span>';
-                } else if (startParam) {
-                    output.innerHTML = `<span class="unknown">Неизвестный параметр: ${startParam}</span>`;
-                } else {
-                    output.innerHTML = '<span class="unknown">Параметр start_param не найден</span>';
-                }
-
-                webApp.expand();
+            if (startParam === 'action-hit') {
+                output.innerHTML = '<span class="success">Ой ой ой! (action=hit)</span>';
+            } else if (startParam === 'action-beat') {
+                output.innerHTML = '<span class="success">Туц туц туц! (action=beat)</span>';
+            } else if (startParam) {
+                output.innerHTML = `<span class="unknown">Найден параметр: ${startParam}</span>`;
+            } else {
+                output.innerHTML = '<span class="unknown">Параметр startapp не найден в URL</span>';
             }
-        }, 100); 
+        }
 
-        setTimeout(() => {
-            if (!window.Telegram || !window.Telegram.WebApp) {
-                clearInterval(checkInterval);
-                dataDisplay.textContent = "Это не Telegram Web App!";
-                output.innerHTML = '<span class="unknown">Запустите через Telegram бота</span>';
-            }
-        }, 2000); 
-    }
-
-    window.addEventListener('DOMContentLoaded', processTelegramData);
-</script>
+        window.addEventListener('DOMContentLoaded', processParameters);
+    </script>
 </body>
 </html>
