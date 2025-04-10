@@ -32,6 +32,7 @@
             background-size: cover;
             background-position: center;
             transition: transform 0.3s ease-out;
+            z-index: 9999;
         }
         .hit-animation {
             animation: hit 0.1s infinite;
@@ -184,7 +185,7 @@
                     oscillator.frequency.setValueAtTime(300 + Math.random() * 100, now);
                     
                     // Повторяем каждые 1.5 секунды
-                    setTimeout(beatPattern, 1500);
+                    setTimeout(beatPattern, 400);
                 }
                 
                 beatPattern();
@@ -204,7 +205,7 @@
                     
                     gypsy.style.transform = `translate(${randomX}px, ${randomY}px)`;
                     
-                    setTimeout(move, 2000); // Двигаем каждые 2 секунды
+                    setTimeout(move, 800); // Двигаем каждые 2 секунды
                 }
                 
                 move();
