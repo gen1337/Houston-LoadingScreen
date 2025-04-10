@@ -100,7 +100,7 @@
                     output.style.color = 'red';
                     gypsy.classList.add('hit-animation');
                     playSirenSound();
-                    
+
                 } else if (action === 'beat') {
                     output.textContent = 'БЛЯТЬ, ЧТО, БАБКА СОШЛА С УМА. НЕМЫСЛИМО. ЭТО ОГУРЕЧНЫЙ ПИЗДЕЦ, НАДЕЮСЬ ОНА ЕЩЕ В АНУС СЕБЕ ПАРОЧКУ ЗАСУНУЛА. БЛЯДЬ ЧТО ОНА ВНАТУРЕ ДЕЛАЕТ НАХУЯ ОНА БЕГАЕТ ПО ЭКРАНУ ТВОЕМУ НАХУЙ ЧТО';
                     output.style.color = 'green';
@@ -114,21 +114,21 @@
             function playSirenSound() {
                 if (isSoundPlaying) return;
                 isSoundPlaying = true;
-                
+
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 oscillator = audioContext.createOscillator();
                 gainNode = audioContext.createGain();
-                
+
                 oscillator.type = 'sawtooth';
                 oscillator.frequency.value = 800;
                 gainNode.gain.value = 0.3;
-                
+
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
-                
+
                 let baseFreq = 800;
                 let time = audioContext.currentTime;
-                
+
                 for(let i = 0; i < 30; i++) {
                     const randFreq = baseFreq + Math.random() * 600 - 300;
                     oscillator.frequency.exponentialRampToValueAtTime(
@@ -137,13 +137,13 @@
                     );
                     time += 0.2;
                 }
-                
+
                 gainNode.gain.setValueAtTime(0.3, time);
                 gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
-                
+
                 oscillator.start();
                 oscillator.stop(time + 1.5);
-                
+
                 oscillator.onended = () => {
                     isSoundPlaying = false;
                 };
@@ -152,45 +152,39 @@
             function playBeatSound() {
                 if (isSoundPlaying) return;
                 isSoundPlaying = true;
-                
+
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 oscillator = audioContext.createOscillator();
                 gainNode = audioContext.createGain();
-                
+
                 oscillator.type = 'square';
                 oscillator.frequency.value = 300;
                 gainNode.gain.value = 0;
-                
+
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
-                
+
                 oscillator.start();
-                
+
                 function beatPattern() {
                     const now = audioContext.currentTime;
-                    
-                    // ТУЦ (громкий звук)
+
                     gainNode.gain.setValueAtTime(0.5, now);
                     gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-                    
-                    // ТУЦ (чуть тише)
+
                     gainNode.gain.setValueAtTime(0.4, now + 0.5);
                     gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
-                    
-                    // ТУЦ (ещё тише)
+
                     gainNode.gain.setValueAtTime(0.3, now + 1.0);
                     gainNode.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
-                    
-                    // Случайное изменение частоты для разнообразия
+
                     oscillator.frequency.setValueAtTime(300 + Math.random() * 100, now);
-                    
-                    // Повторяем каждые 1.5 секунды
+
                     setTimeout(beatPattern, 400);
                 }
-                
+
                 beatPattern();
-                
-                // Бегающая картинка
+
                 moveImageRandomly();
             }
 
@@ -198,16 +192,16 @@
                 const gypsy = document.getElementById('gypsy');
                 const bodyWidth = document.body.clientWidth;
                 const bodyHeight = document.body.clientHeight;
-                
+
                 function move() {
                     const randomX = Math.random() * (bodyWidth - 200);
                     const randomY = Math.random() * (bodyHeight - 200);
-                    
+
                     gypsy.style.transform = `translate(${randomX}px, ${randomY}px)`;
-                    
-                    setTimeout(move, 800); // Двигаем каждые 2 секунды
+
+                    setTimeout(move, 800); 
                 }
-                
+
                 move();
             }
 
