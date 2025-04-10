@@ -3,74 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Hash Checker</title>
+    <title>Telegram Web App Hash Checker</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 20px auto;
             padding: 20px;
-            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #17212b;
+            color: #f5f5f5;
         }
-        #hash-display {
-            background: #f0f0f0;
-            padding: 10px;
-            border-radius: 5px;
+        #data-display {
+            background: #232e3c;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
             word-break: break-all;
+            font-family: monospace;
+            white-space: pre-wrap;
         }
         #output {
-            margin-top: 20px;
             padding: 15px;
-            background: #e0f7fa;
-            border-radius: 5px;
+            background: #2b5278;
+            border-radius: 8px;
             font-weight: bold;
+            margin-top: 20px;
+        }
+        .success {
+            color: #6ab3f3;
         }
         .unknown {
-            color: #d32f2f;
+            color: #ec3942;
         }
     </style>
 </head>
 <body>
-    <h1>URL Hash Checker</h1>
+    <h1>Telegram Web App Params</h1>
 
-    <p>Текущий хеш:</p>
-    <div id="hash-display">Нет хеша</div>
-
-    <p>Результат проверки:</p>
-    <div id="output">Ожидание параметров...</div>
+    <div id="data-display">Loading Telegram WebApp data...</div>
+    <div id="output">Checking parameters...</div>
 
     <script>
-        function checkHash() {
-
-            const hash = window.location.hash.substring(1);
-            const hashDisplay = document.getElementById('hash-display');
+        function processTelegramData() {
             const output = document.getElementById('output');
+            const dataDisplay = document.getElementById('data-display');
 
-            if (hash) {
-                hashDisplay.textContent = hash;
+            if (window.Telegram && window.Telegram.WebApp) {
+                const webApp = Telegram.WebApp;
+
+                dataDisplay.textContent = JSON.stringify({
+                    initData: webApp.initData,
+                    initDataUnsafe: webApp.initDataUnsafe,
+                    version: webApp.version,
+                    platform: webApp.platform,
+                    themeParams: webApp.themeParams
+                }, null, 2);
+
+                const startParam = webApp.initDataUnsafe.start_param;
+
+                if (startParam === 'action-hit') {
+                    output.innerHTML = '<span class="success">Ой ой ой! (action=hit)</span>';
+                } else if (startParam === 'action-beat') {
+                    output.innerHTML = '<span class="success">Туц туц туц! (action=beat)</span>';
+                } else if (startParam) {
+                    output.innerHTML = `<span class="unknown">Неизвестный параметр: ${startParam}</span>`;
+                } else {
+                    output.innerHTML = '<span class="unknown">Параметр start_param не найден</span>';
+                }
+
+                webApp.expand();
             } else {
-                hashDisplay.textContent = "Нет хеша";
-                output.textContent = "Добавьте параметры в URL, например: #action=hit";
-                return;
-            }
-
-            const params = new URLSearchParams(hash);
-            const action = params.get('action');
-
-            if (action === 'hit') {
-                output.textContent = "Ой ой ой! Вы передали action=hit";
-            } else if (action === 'beat') {
-                output.textContent = "Туц туц туц! Вы передали action=beat";
-            } else if (action) {
-                output.innerHTML = `<span class="unknown">Неизвестный action: <strong>${action}</strong></span>`;
-            } else {
-                output.textContent = "Параметр 'action' не найден в хеше.";
+                dataDisplay.textContent = "Это не Telegram Web App!";
+                output.innerHTML = '<span class="unknown">Запустите через Telegram бота</span>';
             }
         }
 
-        window.addEventListener('DOMContentLoaded', checkHash);
-
-        window.addEventListener('hashchange', checkHash);
+        window.addEventListener('DOMContentLoaded', processTelegramData);
     </script>
 </body>
 </html>
