@@ -1,80 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StartApp Parameter Checker</title>
+    <title>Telegram Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .content {
+            text-align: center;
+            font-size: 24px;
             padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #17212b;
-            color: #f5f5f5;
-        }
-        #data-display {
-            background: #232e3c;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            word-break: break-all;
-            font-family: monospace;
-            white-space: pre-wrap;
-        }
-        #output {
-            padding: 15px;
-            background: #2b5278;
-            border-radius: 8px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        .success {
-            color: #6ab3f3;
-        }
-        .unknown {
-            color: #ec3942;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
-    <h1>URL Parameter Checker</h1>
-
-    <div id="data-display">Checking URL parameters...</div>
-    <div id="output">Looking for startapp parameter...</div>
+    <div class="content" id="output">
+        Ожидаю параметры запуска...
+    </div>
 
     <script>
-        function getParameterByName(name, url = window.location.href) {
-            name = name.replace(/[\[\]]/g, '\\$&');
-            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-            const results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-        }
+        document.addEventListener('DOMContentLoaded', function() {
 
-        function processParameters() {
-            const output = document.getElementById('output');
-            const dataDisplay = document.getElementById('data-display');
+            Telegram.WebApp.ready();
 
-            const startParam = getParameterByName('startapp') || 
-                               getParameterByName('start') || 
-                               window.location.hash.substring(1);
+            function getStartParam() {
+                if (!Telegram.WebApp.initData) {
+                    console.warn('initData не доступен');
+                    return null;
+                }
 
-            dataDisplay.textContent = `URL: ${window.location.href}\n\nExtracted parameter: ${startParam}`;
+                const initData = new URLSearchParams(Telegram.WebApp.initData);
+                const startParam = initData.get('start_param');
 
-            if (startParam === 'action-hit') {
-                output.innerHTML = '<span class="success">Ой ой ой! (action=hit)</span>';
-            } else if (startParam === 'action-beat') {
-                output.innerHTML = '<span class="success">Туц туц туц! (action=beat)</span>';
-            } else if (startParam) {
-                output.innerHTML = `<span class="unknown">Найден параметр: ${startParam}</span>`;
-            } else {
-                output.innerHTML = '<span class="unknown">Параметр startapp не найден в URL</span>';
+                console.log('Получен start_param:', startParam);
+                return startParam;
             }
-        }
 
-        window.addEventListener('DOMContentLoaded', processParameters);
+            function checkParams() {
+                const startParam = getStartParam();
+                const output = document.getElementById('output');
+
+                if (!startParam) {
+                    output.textContent = 'Параметр start_param не найден';
+                    return;
+                }
+
+                const action = startParam.split('-')[1]; 
+
+                if (action === 'hit') {
+                    output.textContent = 'Ой ой ой';
+                    output.style.color = 'red';
+                } else if (action === 'beat') {
+                    output.textContent = 'Туц туц туц';
+                    output.style.color = 'green';
+                } else {
+                    output.textContent = `Неизвестный action: ${startParam}`;
+                }
+            }
+
+            checkParams();
+
+            console.log('Telegram.WebApp.initData:', Telegram.WebApp.initData);
+            console.log('Telegram.WebApp:', Telegram.WebApp);
+        });
     </script>
 </body>
 </html>
