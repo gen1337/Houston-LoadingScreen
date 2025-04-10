@@ -43,12 +43,14 @@
     <div id="data-display">Loading Telegram WebApp data...</div>
     <div id="output">Checking parameters...</div>
 
-    <script>
-        function processTelegramData() {
-            const output = document.getElementById('output');
-            const dataDisplay = document.getElementById('data-display');
+<script>
+    function processTelegramData() {
+        const output = document.getElementById('output');
+        const dataDisplay = document.getElementById('data-display');
 
+        const checkInterval = setInterval(() => {
             if (window.Telegram && window.Telegram.WebApp) {
+                clearInterval(checkInterval);
                 const webApp = Telegram.WebApp;
 
                 dataDisplay.textContent = JSON.stringify({
@@ -63,7 +65,7 @@
 
                 if (startParam === 'action-hit') {
                     output.innerHTML = '<span class="success">Ой ой ой! (action=hit)</span>';
-                } else if (startParam === 'action-beat') {
+                } else if (startParam === 'action-beat') { 
                     output.innerHTML = '<span class="success">Туц туц туц! (action=beat)</span>';
                 } else if (startParam) {
                     output.innerHTML = `<span class="unknown">Неизвестный параметр: ${startParam}</span>`;
@@ -72,13 +74,19 @@
                 }
 
                 webApp.expand();
-            } else {
+            }
+        }, 100); 
+
+        setTimeout(() => {
+            if (!window.Telegram || !window.Telegram.WebApp) {
+                clearInterval(checkInterval);
                 dataDisplay.textContent = "Это не Telegram Web App!";
                 output.innerHTML = '<span class="unknown">Запустите через Telegram бота</span>';
             }
-        }
+        }, 2000); 
+    }
 
-        window.addEventListener('DOMContentLoaded', processTelegramData);
-    </script>
+    window.addEventListener('DOMContentLoaded', processTelegramData);
+</script>
 </body>
 </html>
