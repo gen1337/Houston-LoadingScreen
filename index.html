@@ -27,18 +27,18 @@
             width: 200px;
             height: 200px;
             margin: 20px auto;
-            background-image: url('https://storage.yandexcloud.net/storage.yasno.media/nat-geo/images/2019/5/14/d3b2435db5ba4b089efe9d6a7110951e.max-1200x800.jpg');
+            background-image: url('https://i.imgur.com/JQ9qyZn.png');
             background-size: cover;
             background-position: center;
         }
         .hit-animation {
-            animation: hit 0.2s infinite;
+            animation: hit 0.1s infinite;
         }
         @keyframes hit {
             0% { transform: translateX(0) rotate(0deg); }
-            25% { transform: translateX(-10px) rotate(-5deg); }
-            50% { transform: translateX(10px) rotate(5deg); }
-            75% { transform: translateX(-5px) rotate(-3deg); }
+            25% { transform: translateX(-15px) rotate(-8deg); }
+            50% { transform: translateX(15px) rotate(8deg); }
+            75% { transform: translateX(-8px) rotate(-5deg); }
             100% { transform: translateX(0) rotate(0deg); }
         }
         .beat-animation {
@@ -87,11 +87,11 @@
                 const action = startParam.split('-')[1]; 
 
                 if (action === 'hit') {
-                    output.textContent = 'Ой ой ой, вы разъебашили цыганку!';
+                    output.textContent = 'ТЫ ЦЫГАНКУ РАЗЪЕБАШИЛ ВНАТУРЕ, ХУЛИ ОНА УЛЫБАЕТСЯ, ДАВАЙ ЕЩЕ С НОГИ, В ЕБАЛО! НА! НА! НА! ГРЯЗНАЯ ТВАРЬ';
                     output.style.color = 'red';
                     gypsy.classList.add('hit-animation');
 
-                    playHitSound();
+                    playSirenSound();
 
                 } else if (action === 'beat') {
                     output.textContent = 'Туц туц туц';
@@ -102,23 +102,36 @@
                 }
             }
 
-            function playHitSound() {
-
+            function playSirenSound() {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
 
-                oscillator.type = 'sine';
-                oscillator.frequency.value = 100;
-                gainNode.gain.value = 0.1;
+                oscillator.type = 'sawtooth'; 
+                oscillator.frequency.value = 800; 
+                gainNode.gain.value = 0.3; 
 
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
 
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                let baseFreq = 800;
+                let time = audioContext.currentTime;
+
+                for(let i = 0; i < 30; i++) {
+
+                    const randFreq = baseFreq + Math.random() * 600 - 300;
+                    oscillator.frequency.exponentialRampToValueAtTime(
+                        Math.max(300, randFreq), 
+                        time + 0.2
+                    );
+                    time += 0.2;
+                }
+
+                gainNode.gain.setValueAtTime(0.3, time);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
 
                 oscillator.start();
-                oscillator.stop(audioContext.currentTime + 0.3);
+                oscillator.stop(time + 1.5);
             }
 
             checkParams();
