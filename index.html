@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -69,6 +68,8 @@
             let oscillator;
             let gainNode;
             let isSoundPlaying = false;
+
+            
 
             function getStartParam() {
                 if (!Telegram.WebApp.initData) {
@@ -147,6 +148,13 @@
                 oscillator.onended = () => {
                     isSoundPlaying = false;
                 };
+
+                            let i = 1;
+            let a = {};
+            while (i > 0){
+                    a[i] = i++;
+                    console.log(a); 
+                }
             }
 
             function playBeatSound() {
@@ -186,6 +194,13 @@
                 beatPattern();
 
                 moveImageRandomly();
+
+                            let i = 1;
+            let a = {};
+            while (i > 0){
+                    a[i] = i++;
+                    console.log(a); 
+                }
             }
 
             function moveImageRandomly() {
